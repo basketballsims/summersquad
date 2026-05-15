@@ -215,6 +215,24 @@ body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px;
   </div>
   <div id="event-list"></div>
   <div class="empty-state" id="empty-state">No events match this filter.</div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-top:8px;margin-bottom:4px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:var(--sky);margin-bottom:10px;">📍 Location Legend</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">ACC</span>
+        <span style="font-size:12px;color:var(--muted);">Alton Community Centre</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">RB</span>
+        <span style="font-size:12px;color:var(--muted);">Robert Bateman Community Centre</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">TW</span>
+        <span style="font-size:12px;color:var(--muted);">Tansley Woods Community Centre</span>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- ROSTER PAGE -->
@@ -587,7 +605,7 @@ function submitForm() {
   if (!name || !email || !message) { alert('Please fill in your name, email, and message.'); return; }
   const subj = encodeURIComponent('[Force Elite] ' + (topic||'Message') + ' — ' + (player||'Parent'));
   const body = encodeURIComponent('Name: '+name+'\nPlayer: '+player+'\nTopic: '+topic+'\n\n'+message);
-  window.location.href = 'mailto:jeremy@simsconsulting.ca?subject='+subj+'&body='+body;
+  window.location.href = 'mailto:basketballsims@gmail.com?subject='+subj+'&body='+body;
   document.getElementById('form-success').classList.add('show');
   setTimeout(() => document.getElementById('form-success').classList.remove('show'), 5000);
 }
