@@ -2,251 +2,770 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Force Elite">
-<meta name="theme-color" content="#0d1a2e">
+<meta name="theme-color" content="#0d1b3e">
+<link rel="manifest" href="manifest.json">
 <title>Force Elite U15 — Summer 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --navy:    #1a2b5e;
-  --navy-dk: #0d1a2e;
-  --sky:     #7ab8d4;
-  --sky-lt:  #b8d9eb;
-  --sky-dim: rgba(122,184,212,0.15);
-  --yellow:  #f5d020;
-  --yellow-dim: rgba(245,208,32,0.12);
-  --bg:       #0d1a2e;
-  --surface:  #132038;
-  --surface2: #1a2b4a;
-  --border:   rgba(122,184,212,0.15);
-  --text:     #e8f0f8;
-  --muted:    #7a98b8;
-  --practice:  #f5d020;  --practice-dim: rgba(245,208,32,0.12);
-  --game:      #7ab8d4;  --game-dim:     rgba(122,184,212,0.12);
-  --tourn:     #e87040;  --tourn-dim:    rgba(232,112,64,0.12);
-  --agility:   #38d490;  --agility-dim:  rgba(56,212,144,0.1);
-  --open:      #445566;  --open-dim:     rgba(68,85,102,0.12);
+  --navy: #0d1b3e;
+  --navy2: #162248;
+  --sky: #7ab3d9;
+  --sky-dim: rgba(122,179,217,0.15);
+  --sky-bright: #a8cfe8;
+  --yellow: #f5d13a;
+  --yellow-dim: rgba(245,209,58,0.15);
+  --white: #f0f4ff;
+  --muted: #7b8db5;
+  --border: rgba(122,179,217,0.15);
+  --surface: rgba(22,34,72,0.85);
+  --surface2: rgba(13,27,62,0.95);
+  --game: #3B8DFF;
+  --game-dim: rgba(59,141,255,0.13);
+  --tourn: var(--yellow);
+  --tourn-dim: var(--yellow-dim);
+  --agility: #22C97A;
+  --agility-dim: rgba(34,201,122,0.13);
+  --practice: var(--sky);
+  --practice-dim: var(--sky-dim);
+  --open: #4a5a7a;
 }
-html, body { background: var(--bg); min-height: 100vh; }
-body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px; margin: 0 auto; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-.stripe-bar { height: 4px; background: linear-gradient(90deg, var(--sky) 0%, #fff 33%, var(--navy) 33%, var(--navy) 66%, var(--yellow) 66%); }
+html { background: var(--navy); }
 
-/* STATUS */
-.status-banner { background: linear-gradient(135deg,var(--navy) 0%,#0f2545 100%); border-bottom: 2px solid var(--yellow); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; position: sticky; top: 0; z-index: 200; }
-.status-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; animation: pulse 2s ease-in-out infinite; }
-.status-dot.green  { background:var(--agility); box-shadow:0 0 0 3px rgba(56,212,144,0.25); }
-.status-dot.yellow { background:var(--yellow);  box-shadow:0 0 0 3px rgba(245,208,32,0.25); }
-.status-dot.red    { background:#e85050;         box-shadow:0 0 0 3px rgba(232,80,80,0.25); }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.7;transform:scale(1.15)} }
-.status-text { flex:1; font-size:13px; font-weight:500; color:var(--text); line-height:1.3; }
-.status-label { font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:1px; }
-.status-next { background:var(--yellow-dim); border:1px solid rgba(245,208,32,0.3); color:var(--yellow); font-size:10px; font-weight:600; padding:3px 8px; border-radius:10px; text-align:center; flex-shrink:0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* BG TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(122,179,217,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(245,209,58,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
 
 /* HEADER */
-.app-header { background:linear-gradient(180deg,#132038 0%,var(--bg) 100%); padding:16px 16px 14px; border-bottom:1px solid var(--border); position:sticky; top:52px; z-index:100; }
-.header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-.jersey-icon { width:44px; height:44px; background:var(--sky); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; border:2px solid var(--navy); box-shadow:2px 2px 0 var(--yellow); }
-.team-info { flex:1; padding-left:10px; }
-.team-name { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px; line-height:1; background:linear-gradient(135deg,var(--sky-lt) 0%,var(--sky) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.team-sub { font-size:11px; color:var(--muted); letter-spacing:0.5px; margin-top:2px; }
-.season-pill { background:var(--yellow-dim); color:var(--yellow); font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; padding:4px 12px; border-radius:20px; border:1px solid rgba(245,208,32,0.4); }
+.app-header {
+  background: linear-gradient(180deg, rgba(13,27,62,0.98) 0%, rgba(13,27,62,0.92) 100%);
+  padding: 48px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
 
-.filter-bar { display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
-.filter-bar::-webkit-scrollbar { display:none; }
-.filter-btn { flex-shrink:0; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; padding:6px 13px; border-radius:20px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
-.filter-btn.active                      { color:var(--text); border-color:var(--sky); background:var(--sky-dim); }
-.filter-btn[data-type="game"].active      { border-color:var(--game); background:var(--game-dim); color:var(--game); }
-.filter-btn[data-type="tournament"].active{ border-color:var(--tourn); background:var(--tourn-dim); color:var(--tourn); }
-.filter-btn[data-type="agility"].active   { border-color:var(--agility); background:var(--agility-dim); color:var(--agility); }
-.filter-btn[data-type="practice"].active  { border-color:var(--practice); background:var(--practice-dim); color:var(--practice); }
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.team-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jersey-thumb {
+  width: 48px;
+  height: 48px;
+  background: var(--sky);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2.5px solid var(--yellow);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.team-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 3px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.team-sub {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+  margin-top: 3px;
+}
+
+/* STATUS BAR */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(34,201,122,0.1);
+  border: 1px solid rgba(34,201,122,0.25);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.status-bar.warning { background: rgba(245,209,58,0.1); border-color: rgba(245,209,58,0.3); }
+.status-bar.cancelled { background: rgba(220,50,50,0.1); border-color: rgba(220,50,50,0.3); }
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #22C97A;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px #22C97A;
+  animation: pulse 2s infinite;
+}
+
+.status-bar.warning .status-dot { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+.status-bar.cancelled .status-dot { background: #dc3232; box-shadow: 0 0 6px #dc3232; animation: none; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.status-text { font-size: 12px; font-weight: 600; color: var(--white); flex: 1; }
+.status-sub { font-size: 11px; color: var(--muted); }
+.status-edit { font-size: 11px; color: var(--sky); font-weight: 600; cursor: pointer; }
+
+/* FILTER */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filter-btn.active { color: var(--navy); background: var(--sky); border-color: var(--sky); }
+.filter-btn[data-type="game"].active { background: var(--game); border-color: var(--game); color: #fff; }
+.filter-btn[data-type="tournament"].active { background: var(--yellow); border-color: var(--yellow); color: var(--navy); }
+.filter-btn[data-type="agility"].active { background: var(--agility); border-color: var(--agility); color: #fff; }
+.filter-btn[data-type="practice"].active { background: var(--sky); border-color: var(--sky); color: var(--navy); }
+
+/* MAIN */
+main { padding: 0 14px 100px; position: relative; z-index: 1; }
 
 /* STATS */
-.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:14px 16px 0; }
-.stat-cell { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 6px; text-align:center; }
-.stat-num { font-family:'Bebas Neue',sans-serif; font-size:24px; line-height:1; margin-bottom:3px; }
-.stat-label { font-size:10px; color:var(--muted); }
-.stat-cell:nth-child(1) .stat-num { color:var(--practice); }
-.stat-cell:nth-child(2) .stat-num { color:var(--game); }
-.stat-cell:nth-child(3) .stat-num { color:var(--tourn); }
-.stat-cell:nth-child(4) .stat-num { color:var(--agility); }
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 14px 14px 0;
+  position: relative; z-index: 1;
+}
 
-/* PAGES */
-.page { display:none; padding:0 16px 100px; }
-.page.active { display:block; }
-#page-schedule { padding-top:8px; }
-.page-header { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--text); padding:20px 0 16px; }
+.stat-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 6px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
 
-/* EVENT CARDS */
-.month-header { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--sky); padding:22px 4px 10px; display:flex; align-items:center; gap:10px; }
-.month-header::after { content:''; flex:1; height:1px; background:var(--border); }
-.event-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; margin-bottom:8px; overflow:hidden; cursor:pointer; transition:transform 0.1s; }
-.event-card:active { transform:scale(0.98); }
-.event-card.practice   { border-left:3px solid var(--practice); }
-.event-card.game       { border-left:3px solid var(--game); }
-.event-card.tournament { border-left:3px solid var(--tourn); }
-.event-card.agility    { border-left:3px solid var(--agility); }
-.event-card.open       { border-left:3px solid var(--open); opacity:0.55; }
-.card-inner { padding:12px 14px; display:flex; align-items:center; gap:12px; }
-.date-block { display:flex; flex-direction:column; align-items:center; min-width:36px; }
-.date-day { font-family:'Bebas Neue',sans-serif; font-size:28px; line-height:1; color:var(--text); }
-.date-dow { font-size:10px; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; margin-top:1px; }
-.divider-v { width:1px; height:38px; background:var(--border); flex-shrink:0; }
-.event-info { flex:1; min-width:0; }
-.event-type-badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; letter-spacing:0.5px; padding:2px 7px; border-radius:10px; margin-bottom:4px; text-transform:uppercase; }
-.badge-practice   { background:var(--practice-dim); color:var(--practice); }
-.badge-game       { background:var(--game-dim);      color:var(--game); }
-.badge-tournament { background:var(--tourn-dim);     color:var(--tourn); }
-.badge-agility    { background:var(--agility-dim);   color:var(--agility); }
-.badge-open       { background:var(--open-dim);      color:var(--open); }
-.event-title { font-size:14px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.event-meta { display:flex; gap:10px; margin-top:3px; flex-wrap:wrap; }
-.meta-item { display:flex; align-items:center; gap:4px; font-size:12px; color:var(--muted); }
-.card-expanded { padding:0 14px 12px; border-top:1px solid var(--border); display:none; background:var(--surface2); }
-.card-expanded.open { display:block; }
-.expanded-row { display:flex; justify-content:space-between; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--border); gap:12px; }
-.expanded-row:last-child { border-bottom:none; }
-.exp-label { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); flex-shrink:0; padding-top:1px; }
-.exp-value { font-size:13px; color:var(--text); text-align:right; }
-.ext-link { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:var(--yellow); background:var(--yellow-dim); border:1px solid rgba(245,208,32,0.3); border-radius:20px; padding:5px 12px; margin-top:8px; text-decoration:none; }
-.empty-state { text-align:center; padding:40px 20px; color:var(--muted); font-size:14px; display:none; }
-.empty-state.show { display:block; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.stat-label { font-size: 10px; color: var(--muted); }
+.stat-cell:nth-child(1) .stat-num { color: var(--sky); }
+.stat-cell:nth-child(2) .stat-num { color: var(--game); }
+.stat-cell:nth-child(3) .stat-num { color: var(--yellow); }
+.stat-cell:nth-child(4) .stat-num { color: var(--agility); }
+
+/* MONTH */
+.month-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1;
+  letter-spacing: 3px;
+  color: var(--sky);
+  padding: 20px 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.month-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* EVENT CARD */
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: transform 0.1s;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.event-card:active { transform: scale(0.98); }
+.event-card.practice { border-left: 3px solid var(--sky); }
+.event-card.game { border-left: 3px solid var(--game); }
+.event-card.tournament { border-left: 3px solid var(--yellow); }
+.event-card.agility { border-left: 3px solid var(--agility); }
+.event-card.open { border-left: 3px solid var(--open); opacity: 0.55; }
+.event-card.tryout { border-left: 3px solid #c97af5; }
+
+.card-inner {
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.date-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 34px;
+}
+
+.date-day {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.date-dow {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.divider-v { width: 1px; height: 38px; background: var(--border); flex-shrink: 0; }
+
+.event-info { flex: 1; min-width: 0; }
+
+.event-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.badge-practice { background: var(--sky-dim); color: var(--sky-bright); }
+.badge-game { background: var(--game-dim); color: var(--game); }
+.badge-tournament { background: var(--tourn-dim); color: var(--yellow); }
+.badge-agility { background: var(--agility-dim); color: var(--agility); }
+.badge-open { background: rgba(74,90,122,0.2); color: var(--open); }
+.badge-tryout { background: rgba(180,79,232,0.13); color: #c97af5; }
+
+.event-title { font-size: 14px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.event-meta { display: flex; gap: 10px; margin-top: 3px; flex-wrap: wrap; }
+
+.meta-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); }
+
+.card-expanded {
+  padding: 0 13px 12px;
+  border-top: 1px solid var(--border);
+  font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1;
+  color: var(--muted);
+  display: none;
+  background: rgba(13,27,62,0.5);
+}
+
+.card-expanded.open { display: block; }
+
+.expanded-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+
+.expanded-row:last-child { border-bottom: none; }
+.exp-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); flex-shrink: 0; padding-top: 1px; }
+.exp-value { font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1; color: var(--white); text-align: right; }
+
+.event-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border: 1px solid rgba(245,209,58,0.3);
+  border-radius: 20px;
+  padding: 5px 12px;
+  margin-top: 8px;
+  text-decoration: none;
+}
+
+/* PAGE SYSTEM */
+.page { display: none; padding: 14px 14px 100px; position: relative; z-index: 1; }
+.page.active { display: block; }
+
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--white);
+  padding: 16px 0 14px;
+}
+
+/* INFO CARDS */
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.info-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: var(--sky);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1;
+}
+
+.info-row:last-child { border-bottom: none; }
+.info-row-icon { font-size: 15px; color: var(--muted); margin-top: 1px; flex-shrink: 0; }
+.info-row-text { color: var(--muted); line-height: 1.5; }
+.info-row-text strong { display: block; color: var(--white); font-weight: 600; margin-bottom: 1px; }
 
 /* ROSTER */
-.roster-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px; }
-.player-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 10px; display:flex; align-items:center; gap:10px; }
-.player-number { font-family:'Bebas Neue',sans-serif; font-size:26px; line-height:1; color:var(--sky); min-width:32px; text-align:center; }
-.player-name { font-size:12px; font-weight:600; color:var(--text); }
-.player-height { font-size:11px; color:var(--muted); margin-top:2px; }
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
 
-/* INFO */
-.info-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:12px; }
-.info-card h3 { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:1px; color:var(--sky); margin-bottom:12px; }
-.info-row { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; }
-.info-row:last-child { border-bottom:none; }
-.info-row-icon { font-size:16px; color:var(--muted); margin-top:1px; flex-shrink:0; }
-.info-row-text { color:var(--muted); }
-.info-row-text strong { display:block; color:var(--text); font-weight:600; margin-bottom:1px; }
-.tourn-card { background:var(--surface2); border:1px solid var(--border); border-left:3px solid var(--tourn); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
-.tourn-card h4 { font-weight:600; font-size:14px; color:var(--text); margin-bottom:3px; }
-.tourn-card p  { font-size:12px; color:var(--muted); line-height:1.5; }
-.tourn-link    { color:var(--yellow); font-size:12px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-top:6px; }
-.install-banner { background:linear-gradient(135deg,var(--navy) 0%,var(--surface2) 100%); border:1px solid rgba(122,184,212,0.3); border-left:3px solid var(--sky); border-radius:14px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:flex-start; gap:12px; }
-.install-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
-.install-text { font-size:13px; color:var(--muted); line-height:1.6; }
-.install-text strong { display:block; color:var(--text); font-weight:600; margin-bottom:4px; font-size:14px; }
+.player-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.15s;
+}
 
-/* CONTACT */
-.contact-form { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 16px; margin-bottom:12px; }
-.contact-form h3 { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1.5px; color:var(--sky); margin-bottom:14px; }
-.form-group { margin-bottom:12px; }
-.form-label { display:block; font-size:11px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.form-input, .form-select, .form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); outline:none; transition:border-color 0.2s; -webkit-appearance:none; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--sky); box-shadow:0 0 0 3px rgba(122,184,212,0.1); }
-.form-input::placeholder, .form-textarea::placeholder { color:var(--muted); }
-.form-select option { background:var(--surface2); }
-.form-textarea { resize:vertical; min-height:90px; line-height:1.5; }
-.submit-btn { width:100%; background:linear-gradient(135deg,var(--sky) 0%,#5a9ec0 100%); color:var(--navy-dk); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; border:none; border-radius:12px; padding:13px 20px; cursor:pointer; transition:opacity 0.2s,transform 0.1s; margin-top:4px; }
-.submit-btn:active { opacity:.85; transform:scale(0.98); }
-.form-success { background:rgba(56,212,144,0.1); border:1px solid rgba(56,212,144,0.3); border-radius:12px; padding:14px; text-align:center; color:var(--agility); font-size:14px; font-weight:500; display:none; margin-top:12px; }
-.form-success.show { display:block; }
+.player-card.highlight { border-color: var(--yellow); }
 
-/* NAV */
-.bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:rgba(13,26,46,0.96); border-top:1px solid var(--border); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); display:flex; padding:10px 0 24px; z-index:150; }
-.nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; color:var(--muted); font-size:10px; transition:color 0.15s; padding:4px 0; }
-.nav-item.active { color:var(--sky); }
-.nav-icon { font-size:20px; }
+.player-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--sky);
+  min-width: 36px;
+  text-align: center;
+}
+
+.player-card.highlight .player-num { color: var(--yellow); }
+
+.player-info { flex: 1; min-width: 0; }
+
+.player-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.player-height { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* TOURNAMENT CARD */
+.tourn-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--yellow);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.tourn-card h4 { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 3px; }
+.tourn-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.tourn-link { color: var(--yellow); font-size: 12px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
+
+/* CONTACT FORM */
+.form-group { margin-bottom: 12px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: rgba(22,34,72,0.8);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--white);
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--sky); }
+.form-textarea { resize: vertical; min-height: 90px; }
+
+.form-select option { background: var(--navy); color: var(--white); }
+
+.submit-btn {
+  width: 100%;
+  background: var(--sky);
+  color: var(--navy);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.submit-btn:active { transform: scale(0.98); background: var(--sky-bright); }
+
+.success-msg {
+  display: none;
+  background: rgba(34,201,122,0.1);
+  border: 1px solid rgba(34,201,122,0.3);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--agility);
+  margin-top: 10px;
+}
+
+.success-msg.show { display: block; }
+
+/* INSTALL BANNER */
+.install-banner {
+  background: var(--sky-dim);
+  border: 1px solid rgba(122,179,217,0.25);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.install-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.install-text strong { display: block; color: var(--white); font-weight: 600; margin-bottom: 3px; font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: rgba(13,27,62,0.95);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  padding: 10px 0 24px;
+  z-index: 200;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 10px;
+  transition: color 0.15s;
+  padding: 4px 0;
+}
+
+.nav-item.active { color: var(--sky); }
+.nav-icon { font-size: 19px; }
+
+/* STATUS EDITOR MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 300;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-sheet {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px 40px;
+  width: 100%;
+  max-width: 430px;
+}
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.status-option:active { border-color: var(--sky); }
+.status-option-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.status-option-text { font-size: 14px; font-weight: 600; color: var(--white); }
+.status-option-sub { font-size: 12px; color: var(--muted); }
+
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; display: none; }
+.empty-state.show { display: block; }
+
+/* Force script wordmark style label */
+.season-pill {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 30px;
+  padding: 5px 16px;
+  line-height: 1;
+  color: var(--yellow);
+  letter-spacing: 3px;
+}
+
+/* COMPLETED SESSIONS */
+.completed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 4px 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--agility);
+}
+
+.comp-toggle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--agility);
+  border: none;
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+  letter-spacing: 0;
+}
+
+.past-event {
+  opacity: 0.75;
+  background: rgba(13,27,62,0.5) !important;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  text-decoration-color: rgba(240,244,255,0.4);
+  color: var(--muted) !important;
+}
+
+.past-day { color: var(--muted) !important; }
+
+.done-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--agility-dim);
+  border: 1.5px solid var(--agility);
+  color: var(--agility);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
 
-<div class="stripe-bar"></div>
-
-<!-- STATUS BANNER -->
-<div class="status-banner">
-  <div class="status-dot" id="status-dot"></div>
-  <div class="status-text">
-    <span class="status-label" id="status-label">Team Status</span>
-    <span id="status-message">Loading...</span>
-  </div>
-  <div class="status-next" id="status-next"></div>
-</div>
-
 <!-- HEADER -->
 <header class="app-header" id="schedule-header">
   <div class="header-top">
-    <div class="jersey-icon">🏀</div>
-    <div class="team-info">
-      <div class="team-name">Force Elite</div>
-      <div class="team-sub">Burlington · U15 · Summer 2026</div>
+    <div class="team-brand">
+      <div class="jersey-thumb">🏀</div>
+      <div>
+        <div class="team-name">Force Elite</div>
+        <div class="team-sub">Burlington · U15 · Summer 2026</div>
+      </div>
     </div>
     <span class="season-pill">2026</span>
   </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" data-type="all">All</button>
-    <button class="filter-btn" data-type="practice">Practice</button>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar" id="status-bar" onclick="openStatusModal()">
+    <div class="status-dot" id="status-dot"></div>
+    <div style="flex:1">
+      <div class="status-text" id="status-text">All systems go — Season is ON</div>
+      <div class="status-sub" id="status-sub">Tap to update practice status</div>
+    </div>
+    <span class="status-edit">Edit</span>
+  </div>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" data-type="all">All Events</button>
+    <button class="filter-btn" data-type="practice">Practices</button>
     <button class="filter-btn" data-type="game">Coalition</button>
-    <button class="filter-btn" data-type="tournament">Tourneys</button>
-    <button class="filter-btn" data-type="agility">Conker</button>
+    <button class="filter-btn" data-type="tournament">Tournaments</button>
+    <button class="filter-btn" data-type="agility">Conker Fitness</button>
   </div>
 </header>
 
+<!-- STATS ROW -->
 <div class="stats-row" id="stats-row">
-  <div class="stat-cell"><div class="stat-num">19</div><div class="stat-label">Practices</div></div>
+  <div class="stat-cell"><div class="stat-num">18</div><div class="stat-label">Practices</div></div>
   <div class="stat-cell"><div class="stat-num">10</div><div class="stat-label">Games</div></div>
   <div class="stat-cell"><div class="stat-num">3</div><div class="stat-label">Tourneys</div></div>
   <div class="stat-cell"><div class="stat-num">16</div><div class="stat-label">Agility</div></div>
 </div>
 
 <!-- SCHEDULE PAGE -->
-<main id="page-schedule" class="page active">
-  <div style="margin:12px 0 4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;">LOCATION KEY</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;">
-      <div style="display:flex;align-items:center;gap:7px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--sky);min-width:28px;">ACC</span><span style="font-size:11px;color:var(--muted);">Alton Community Centre</span></div>
-      <div style="display:flex;align-items:center;gap:7px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--sky);min-width:28px;">RB</span><span style="font-size:11px;color:var(--muted);">Robert Bateman Centre</span></div>
-      <div style="display:flex;align-items:center;gap:7px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--sky);min-width:28px;">TW</span><span style="font-size:11px;color:var(--muted);">Tansley Woods Centre</span></div>
-    </div>
-  </div>
+<main id="page-schedule" class="page active" style="padding-top:8px;">
   <div id="event-list"></div>
   <div class="empty-state" id="empty-state">No events match this filter.</div>
-
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-top:8px;margin-bottom:4px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:var(--sky);margin-bottom:10px;">📍 Location Legend</div>
-    <div style="display:flex;flex-direction:column;gap:7px;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">ACC</span>
-        <span style="font-size:12px;color:var(--muted);">Alton Community Centre</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">RB</span>
-        <span style="font-size:12px;color:var(--muted);">Robert Bateman Community Centre</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);min-width:32px;">TW</span>
-        <span style="font-size:12px;color:var(--muted);">Tansley Woods Community Centre</span>
-      </div>
-    </div>
-  </div>
 </main>
 
 <!-- ROSTER PAGE -->
 <main id="page-roster" class="page">
-  <div class="page-header">Roster</div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;">
-    <div style="width:48px;height:48px;background:var(--sky);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid var(--navy);box-shadow:2px 2px 0 var(--yellow);">🏀</div>
-    <div style="flex:1;">
-      <div style="font-weight:600;color:var(--text);font-size:15px;">Burlington Force Elite</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px;">U15 · 14 Players · Summer 2026</div>
+  <div class="page-title">Roster</div>
+  <div class="info-card" style="margin-bottom:12px;">
+    <h3>🏀 Burlington Force Elite U15</h3>
+    <div class="info-row">
+      <div class="info-row-icon">👥</div>
+      <div class="info-row-text"><strong>13 Players</strong>Summer 2026 Squad</div>
     </div>
-    <div style="text-align:center;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--yellow);line-height:1;">14</div>
-      <div style="font-size:10px;color:var(--muted);">Players</div>
+    <div class="info-row">
+      <div class="info-row-icon">📍</div>
+      <div class="info-row-text"><strong>Home Base</strong>Burlington, Ontario</div>
+    </div>
+    <div class="info-row">
+      <div class="info-row-icon">🎽</div>
+      <div class="info-row-text"><strong>Colours</strong>Sky Blue · Navy · Yellow</div>
     </div>
   </div>
   <div class="roster-grid" id="roster-grid"></div>
@@ -254,13 +773,13 @@ body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px;
 
 <!-- TEAM INFO PAGE -->
 <main id="page-team" class="page">
-  <div class="page-header">Team Info</div>
+  <div class="page-title">Team Info</div>
 
   <div class="install-banner">
-    <div class="install-icon">📲</div>
+    <div style="font-size:22px;flex-shrink:0;margin-top:2px;">📲</div>
     <div class="install-text">
       <strong>Save to your home screen</strong>
-      iPhone: Share → "Add to Home Screen" · Android: ⋮ → "Add to Home Screen"
+      iPhone: Share → "Add to Home Screen" · Android: 3-dot menu → "Add to Home Screen"
     </div>
   </div>
 
@@ -268,7 +787,7 @@ body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px;
     <h3>🏆 Tournaments</h3>
     <div class="tourn-card">
       <h4>PrimeTime Sports — Scarborough</h4>
-      <p>June 6–7 · Scarborough, ON</p>
+      <p>June 6–7 · Scarborough, ON<br>Ontario Basketball Festival</p>
       <a class="tourn-link" href="https://basketball.exposureevents.com/263745/ontario-basketball-festival" target="_blank">🔗 Event Info</a>
     </div>
     <div class="tourn-card">
@@ -284,65 +803,68 @@ body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px;
   </div>
 
   <div class="info-card">
-    <h3>💪 Agility Training</h3>
-    <div class="info-row"><div class="info-row-icon">📍</div><div class="info-row-text"><strong>Conker Fitness</strong>Burlington, ON</div></div>
-    <div class="info-row"><div class="info-row-icon">📅</div><div class="info-row-text"><strong>Every Tue & Thu · 8–9pm</strong>June through July</div></div>
-    <div class="info-row"><div class="info-row-icon">💡</div><div class="info-row-text"><strong>Strength & Agility</strong>2x per week throughout the season</div></div>
+    <h3>🏀 Coalition League</h3>
+    <div class="info-row">
+      <div class="info-row-icon">📊</div>
+      <div class="info-row-text"><strong>33 Teams Registered</strong>Competitive regional league</div>
+    </div>
+    <div class="info-row">
+      <div class="info-row-icon">🗓️</div>
+      <div class="info-row-text"><strong>Game Weekends</strong>Jun 13–14 · Jun 20–21 · Jul 4–5 · Playoffs Jul 18–19</div>
+    </div>
   </div>
 
   <div class="info-card">
-    <h3>🏀 Coalition League</h3>
-    <div class="info-row"><div class="info-row-icon">📊</div><div class="info-row-text"><strong>33 Teams Registered</strong>Competitive regional league</div></div>
-    <div class="info-row"><div class="info-row-icon">🗓️</div><div class="info-row-text"><strong>Game Weekends</strong>Jun 13–14 · Jun 20–21 · Jul 4–5 · Playoffs Jul 18–19</div></div>
+    <h3>💪 Conker Fitness</h3>
+    <div class="info-row">
+      <div class="info-row-icon">📍</div>
+      <div class="info-row-text"><strong>Conker Fitness</strong>Burlington, ON</div>
+    </div>
+    <div class="info-row">
+      <div class="info-row-icon">📅</div>
+      <div class="info-row-text"><strong>Every Tue & Thu — 8:00–9:00pm</strong>Strength & Agility · June & July</div>
+    </div>
   </div>
 
   <div class="info-card">
     <h3>🎓 College Coach Visits</h3>
-    <div class="info-row"><div class="info-row-icon">✅</div><div class="info-row-text"><strong>Periodic visits throughout the season</strong>College & university coaches join practice to speak about training, mentality, and the path to the next level.</div></div>
-  </div>
-
-  <div class="info-card">
-    <h3>📍 Location Legend</h3>
-    <div class="info-row"><div class="info-row-icon">🏫</div><div class="info-row-text"><strong>ACC — Alton Community Centre</strong>1119 Farmstead Dr, Burlington, ON</div></div>
-    <div class="info-row"><div class="info-row-icon">🏫</div><div class="info-row-text"><strong>RB — Robert Bateman Community Centre</strong>5100 New St, Burlington, ON</div></div>
-    <div class="info-row"><div class="info-row-icon">🏫</div><div class="info-row-text"><strong>TW — Tansley Woods Community Centre</strong>1996 Itabashi Way, Burlington, ON</div></div>
-  </div>
-
-  <div class="info-card">
-    <h3>🔗 Team Website</h3>
     <div class="info-row">
-      <div class="info-row-icon">🌐</div>
-      <div class="info-row-text"><a href="https://sites.google.com/view/force-summer-squad-u15/home" target="_blank" style="color:var(--yellow);font-weight:600;font-size:13px;">Force Elite Team Site ↗</a></div>
+      <div class="info-row-icon">✅</div>
+      <div class="info-row-text"><strong>Throughout the season</strong>College & university coaches will join practices to speak with players about training, mentality, and the path to the next level.</div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>🌐 Team Website</h3>
+    <div class="info-row">
+      <div class="info-row-icon">🔗</div>
+      <div class="info-row-text">
+        <a href="https://sites.google.com/view/force-summer-squad-u15/home" target="_blank" style="color:var(--sky);font-weight:600;font-size:13px;">sites.google.com/view/force-summer-squad-u15</a>
+      </div>
     </div>
   </div>
 </main>
 
 <!-- CONTACT PAGE -->
 <main id="page-contact" class="page">
-  <div class="page-header">Contact Coach</div>
+  <div class="page-title">Contact Coach</div>
 
-  <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--surface2) 100%);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
-    <div style="width:50px;height:50px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--navy-dk);flex-shrink:0;letter-spacing:1px;">JS</div>
-    <div>
-      <div style="font-weight:600;color:var(--text);font-size:15px;">Coach Jeremy Sims</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Burlington Force Elite U15</div>
-      <div style="font-size:11px;color:var(--sky);margin-top:3px;">Sims Consulting Inc.</div>
+  <div class="info-card" style="margin-bottom:14px;">
+    <h3>📬 Reach Coach Jeremy</h3>
+    <div class="info-row">
+      <div class="info-row-icon">👤</div>
+      <div class="info-row-text"><strong>Coach Jeremy Sims</strong>Burlington Force Elite — Head Coach</div>
     </div>
   </div>
 
-  <div class="contact-form">
-    <h3>Send a Message</h3>
+  <div class="info-card">
     <div class="form-group">
       <label class="form-label">Your Name</label>
-      <input type="text" class="form-input" id="contact-name" placeholder="Parent or player name">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email Address</label>
-      <input type="email" class="form-input" id="contact-email" placeholder="your@email.com">
+      <input class="form-input" id="f-name" type="text" placeholder="Parent / Guardian name">
     </div>
     <div class="form-group">
       <label class="form-label">Player</label>
-      <select class="form-select" id="contact-player">
+      <select class="form-select" id="f-player">
         <option value="">Select your player...</option>
         <option>#0 — Alex Maalouf</option>
         <option>#1 — Cameron Rasheed</option>
@@ -357,165 +879,210 @@ body { font-family: 'DM Sans', sans-serif; color: var(--text); max-width: 430px;
         <option>#33 — Tommy Arboleda</option>
         <option>#77 — Cohen Sims</option>
         <option>#93 — Nathan Fox</option>
-        <option>#94 — Brier O'Neil</option>
       </select>
     </div>
     <div class="form-group">
       <label class="form-label">Topic</label>
-      <select class="form-select" id="contact-topic">
+      <select class="form-select" id="f-topic">
         <option value="">Select a topic...</option>
-        <option>Schedule / Availability</option>
+        <option>Practice Schedule</option>
+        <option>Game / Tournament Info</option>
         <option>Player Development</option>
-        <option>Tryouts / Roster</option>
-        <option>Tournaments</option>
-        <option>Conker Fitness Training</option>
-        <option>Equipment / Uniforms</option>
+        <option>Playing Time</option>
+        <option>Absence / Availability</option>
+        <option>Payment / Fees</option>
         <option>General Question</option>
         <option>Other</option>
       </select>
     </div>
     <div class="form-group">
       <label class="form-label">Message</label>
-      <textarea class="form-textarea" id="contact-message" placeholder="What would you like to ask Coach Jeremy?"></textarea>
+      <textarea class="form-textarea" id="f-msg" placeholder="Type your message here..."></textarea>
     </div>
-    <button class="submit-btn" onclick="submitForm()">SEND MESSAGE</button>
-    <div class="form-success" id="form-success">✅ Message sent! Coach Jeremy will get back to you soon.</div>
-  </div>
-
-  <div class="info-card">
-    <h3>📋 Quick Notes</h3>
-    <div class="info-row"><div class="info-row-icon">⏰</div><div class="info-row-text"><strong>Response time</strong>Usually within 24–48 hours</div></div>
-    <div class="info-row"><div class="info-row-icon">🚨</div><div class="info-row-text"><strong>Missing practice?</strong>Please message at least 2 hours before</div></div>
-    <div class="info-row"><div class="info-row-icon">📅</div><div class="info-row-text"><strong>Schedule questions</strong>Check the Schedule tab first!</div></div>
+    <button class="submit-btn" onclick="handleSubmit()">SEND MESSAGE</button>
+    <div class="success-msg" id="success-msg">
+      ✅ Message sent! Coach Jeremy will follow up with you soon.
+    </div>
   </div>
 </main>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <div class="nav-item active" data-page="schedule" onclick="switchPage('schedule')">
-    <span class="nav-icon">📅</span>
-    <span>Schedule</span>
+    <span class="nav-icon">📅</span><span>Schedule</span>
   </div>
   <div class="nav-item" data-page="roster" onclick="switchPage('roster')">
-    <span class="nav-icon">👥</span>
-    <span>Roster</span>
+    <span class="nav-icon">🏀</span><span>Roster</span>
   </div>
   <div class="nav-item" data-page="team" onclick="switchPage('team')">
-    <span class="nav-icon">🏀</span>
-    <span>Team Info</span>
+    <span class="nav-icon">ℹ️</span><span>Info</span>
   </div>
   <div class="nav-item" data-page="contact" onclick="switchPage('contact')">
-    <span class="nav-icon">✉️</span>
-    <span>Contact</span>
+    <span class="nav-icon">✉️</span><span>Contact</span>
   </div>
 </nav>
 
+<!-- STATUS MODAL -->
+<div class="modal-overlay" id="status-modal" onclick="closeStatusModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-title">Update Practice Status</div>
+    <div class="status-option" onclick="setStatus('on')">
+      <div class="status-option-dot" style="background:#22C97A;box-shadow:0 0 5px #22C97A;"></div>
+      <div>
+        <div class="status-option-text">All Good — Season is ON</div>
+        <div class="status-option-sub">Next event is confirmed</div>
+      </div>
+    </div>
+    <div class="status-option" onclick="setStatus('warning')">
+      <div class="status-option-dot" style="background:#f5d13a;box-shadow:0 0 5px #f5d13a;"></div>
+      <div>
+        <div class="status-option-text">Check for Updates</div>
+        <div class="status-option-sub">Schedule change or TBD situation</div>
+      </div>
+    </div>
+    <div class="status-option" onclick="setStatus('cancelled')">
+      <div class="status-option-dot" style="background:#dc3232;"></div>
+      <div>
+        <div class="status-option-text">Practice Cancelled</div>
+        <div class="status-option-sub">Tonight's session is off</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-const ROSTER=[
-  {num:'0',  name:'Alex Maalouf',    height:"5'9"},
-  {num:'1',  name:'Cameron Rasheed', height:"5'5"},
-  {num:'2',  name:'Ian McGaw',       height:"6'0"},
-  {num:'3',  name:'Nixon Lovisa',    height:"5'5"},
-  {num:'7',  name:'Jonah Quintana',  height:"5'9"},
-  {num:'12', name:'Justin Joe',      height:"5'9"},
-  {num:'13', name:'Ben Allen',       height:"6'0"},
-  {num:'14', name:'David Messim',    height:"5'9"},
-  {num:'23', name:'Nate Dagg',       height:"6'0"},
-  {num:'25', name:'Andrei Calin',    height:"6'4"},
-  {num:'33', name:'Tommy Arboleda',  height:"6'0"},
-  {num:'77', name:'Cohen Sims',      height:"6'0"},
-  {num:'93', name:'Nathan Fox',      height:"6'1"},
-  {num:'94', name:"Brier O'Neil",    height:"6'7"},
+const ROSTER = [
+  { num:0, name:'Alex Maalouf', height:"5'10" },
+  { num:1, name:'Cameron Rasheed', height:"5'5" },
+  { num:2, name:'Ian McGaw', height:"6'2" },
+  { num:3, name:'Nixon Lovisa', height:"5'7" },
+  { num:7, name:'Jonah Quintana', height:"5'9" },
+  { num:12, name:'Justin Joe', height:"5'10" },
+  { num:13, name:'Ben Allen', height:"6'1" },
+  { num:14, name:'David Messim', height:"5'9" },
+  { num:23, name:'Nate Dagg', height:"6'0" },
+  { num:25, name:'Andrei Calin', height:"6'4" },
+  { num:33, name:'Tommy Arboleda', height:"5'11" },
+  { num:77, name:'Cohen Sims', height:"6'0" },
+  { num:93, name:'Nathan Fox', height:"6'2" },
 ];
 
-const EVENTS=[
-  {date:'2026-06-01',day:1, dow:'Mon',type:'practice',  title:'Practice',        time:'9:00–10:00pm',location:'ACC-7',        details:'Burlington · Court 7'},
-  {date:'2026-06-02',day:2, dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-03',day:3, dow:'Wed',type:'practice',  title:'Practice',        time:'7:30–9:00pm', location:'ACC 7/8',      details:'Guest Coach: Jamie – Mohawk'},
-  {date:'2026-06-04',day:4, dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-06',day:6, dow:'Sat',type:'tournament',title:'PrimeTime Sports',time:'TBD',         location:'Scarborough ON',details:'Ontario Basketball Festival – Day 1',link:'https://basketball.exposureevents.com/263745/ontario-basketball-festival'},
-  {date:'2026-06-07',day:7, dow:'Sun',type:'tournament',title:'PrimeTime Sports',time:'TBD',         location:'Scarborough ON',details:'Ontario Basketball Festival – Day 2',link:'https://basketball.exposureevents.com/263745/ontario-basketball-festival'},
-  {date:'2026-06-08',day:8, dow:'Mon',type:'practice',  title:'Practice',        time:'6:30–8:00pm', location:'RB-A',         details:'Contract game · Permit on file'},
-  {date:'2026-06-09',day:9, dow:'Tue',type:'practice',  title:'Practice',        time:'8:00–9:00pm', location:'ACC 5/6',      details:'Burlington · Courts 5/6'},
-  {date:'2026-06-09',day:9, dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-10',day:10,dow:'Wed',type:'practice',  title:'Practice',        time:'8:00–9:00pm', location:'ACC 5/6',      details:'Burlington · Courts 5/6'},
-  {date:'2026-06-11',day:11,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-13',day:13,dow:'Sat',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',          details:'Game 1 of 3 — Weekend 1 (33 teams)'},
-  {date:'2026-06-14',day:14,dow:'Sun',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',          details:'Games 2–3 of 3 — Weekend 1'},
-  {date:'2026-06-15',day:15,dow:'Mon',type:'practice',  title:'Practice',        time:'6:00–7:30pm', location:'RB-B/C',       details:'FA Permit: 55089'},
-  {date:'2026-06-16',day:16,dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-17',day:17,dow:'Wed',type:'practice',  title:'Practice',        time:'8:00–9:00pm', location:'ACC 5/6',      details:'Burlington · Courts 5/6'},
-  {date:'2026-06-18',day:18,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-20',day:20,dow:'Sat',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',          details:'Game 1 of 3 — Weekend 2'},
-  {date:'2026-06-21',day:21,dow:'Sun',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',          details:'Games 2–3 of 3 — Weekend 2'},
-  {date:'2026-06-22',day:22,dow:'Mon',type:'practice',  title:'Practice',        time:'6:00–7:30pm', location:'RB-B/C',       details:'Burlington · Courts B/C'},
-  {date:'2026-06-23',day:23,dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-24',day:24,dow:'Wed',type:'practice',  title:'Practice',        time:'6:00–7:30pm', location:'ACC-6',         details:'Burlington · Court 6'},
-  {date:'2026-06-25',day:25,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-06-27',day:27,dow:'Sat',type:'open',      title:'Open Weekend',    time:'—',           location:'No game',       details:'Free weekend'},
-  {date:'2026-06-29',day:29,dow:'Mon',type:'practice',  title:'Practice',        time:'8:30–10:00pm',location:'ACC 3/4',       details:'Burlington · Courts 3/4'},
-  {date:'2026-07-04',day:4, dow:'Sat',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',           details:'Game 1 of 3 — Weekend 3'},
-  {date:'2026-07-05',day:5, dow:'Sun',type:'game',      title:'Coalition League',time:'TBD',         location:'TBD',           details:'Games 2–3 of 3 — Weekend 3'},
-  {date:'2026-07-06',day:6, dow:'Mon',type:'practice',  title:'Practice',        time:'8:30–10:00pm',location:'TW',            details:'Tansley Woods Community Centre'},
-  {date:'2026-07-07',day:7, dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-08',day:8, dow:'Wed',type:'practice',  title:'Practice',        time:'7:30–9:00pm', location:'ACC 3/4',       details:'Burlington · Courts 3/4'},
-  {date:'2026-07-09',day:9, dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-11',day:11,dow:'Sat',type:'tournament',title:'Team Addy 3v3',  time:'TBD',         location:'U of Guelph',   details:'3v3 Tournament – Day 1 · Guelph, ON',link:'https://www.teamaddy.ca/basketball'},
-  {date:'2026-07-12',day:12,dow:'Sun',type:'tournament',title:'Team Addy 3v3',  time:'TBD',         location:'U of Guelph',   details:'3v3 Tournament – Day 2 · Guelph, ON',link:'https://www.teamaddy.ca/basketball'},
-  {date:'2026-07-13',day:13,dow:'Mon',type:'practice',  title:'Practice',        time:'8:30–10:00pm',location:'TW',            details:'Tansley Woods · Contract'},
-  {date:'2026-07-14',day:14,dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-15',day:15,dow:'Wed',type:'practice',  title:'Practice',        time:'7:30–9:00pm', location:'ACC 3/4',       details:'Burlington · Courts 3/4'},
-  {date:'2026-07-16',day:16,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-18',day:18,dow:'Sat',type:'game',      title:'Coalition Playoffs',time:'TBD',       location:'TBD',           details:'Coalition League Playoffs – Day 1'},
-  {date:'2026-07-19',day:19,dow:'Sun',type:'game',      title:'Coalition Playoffs',time:'TBD',       location:'TBD',           details:'Coalition League Playoffs – Day 2'},
-  {date:'2026-07-20',day:20,dow:'Mon',type:'practice',  title:'Practice',        time:'8:30–10:00pm',location:'TW',            details:'Tansley Woods · FA Permit: 55445'},
-  {date:'2026-07-21',day:21,dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-22',day:22,dow:'Wed',type:'practice',  title:'Practice',        time:'7:30–9:00pm', location:'ACC 3/4',       details:'Burlington · Courts 3/4'},
-  {date:'2026-07-23',day:23,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-24',day:24,dow:'Fri',type:'tournament',title:'EBSA — Montreal', time:'TBD',         location:'Montreal, QC',  details:'EBSA Tournament – Day 1',link:'https://www.ebsacademy.ca/royal-city-classic-2'},
-  {date:'2026-07-25',day:25,dow:'Sat',type:'tournament',title:'EBSA — Montreal', time:'TBD',         location:'Montreal, QC',  details:'EBSA Tournament – Day 2',link:'https://www.ebsacademy.ca/royal-city-classic-2'},
-  {date:'2026-07-26',day:26,dow:'Sun',type:'tournament',title:'EBSA — Montreal', time:'TBD',         location:'Montreal, QC',  details:'EBSA Tournament – Day 3',link:'https://www.ebsacademy.ca/royal-city-classic-2'},
-  {date:'2026-07-27',day:27,dow:'Mon',type:'practice',  title:'Practice',        time:'8:30–10:00pm',location:'TW',            details:'Tansley Woods Community Centre'},
-  {date:'2026-07-28',day:28,dow:'Tue',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-07-29',day:29,dow:'Wed',type:'practice',  title:'Practice',        time:'7:30–9:00pm', location:'ACC 3/4',       details:'Burlington · Courts 3/4'},
-  {date:'2026-07-30',day:30,dow:'Thu',type:'agility',   title:'Agility Training',time:'8:00–9:00pm', location:'Conker Fitness',details:'Burlington, ON'},
-  {date:'2026-08-01',day:1, dow:'Sat',type:'open',      title:'Open Weekend',    time:'—',           location:'No game',       details:'Free weekend'},
-  {date:'2026-08-02',day:2, dow:'Sun',type:'open',      title:'Open Weekend',    time:'—',           location:'No game',       details:'Free weekend'},
+const EVENTS = [
+  { date:'2026-06-01', day:1, dow:'Mon', type:'practice', title:'Practice', time:'9:00–10:00pm', location:'ACC-7', details:'Burlington · Court 7' },
+  { date:'2026-06-02', day:2, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-03', day:3, dow:'Wed', type:'practice', title:'Practice', time:'7:30–9:00pm', location:'ACC 7/8', details:'Guest: Jamie – Mohawk College' },
+  { date:'2026-06-04', day:4, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-06', day:6, dow:'Sat', type:'tournament', title:'PrimeTime Sports', time:'TBD', location:'Scarborough, ON', details:'Ontario Basketball Festival — Day 1', link:'https://basketball.exposureevents.com/263745/ontario-basketball-festival' },
+  { date:'2026-06-07', day:7, dow:'Sun', type:'tournament', title:'PrimeTime Sports', time:'TBD', location:'Scarborough, ON', details:'Ontario Basketball Festival — Day 2', link:'https://basketball.exposureevents.com/263745/ontario-basketball-festival' },
+  { date:'2026-06-08', day:8, dow:'Mon', type:'tryout', title:'Force U16 Fall Tryouts', time:'6:30–8:00pm', location:'Playground Burlington', details:'U16 Fall Tryouts — Playground Burlington' },
+  { date:'2026-06-09', day:9, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-10', day:10, dow:'Wed', type:'tryout', title:'Force U16 Fall Tryouts', time:'6:00–7:30pm', location:'Playground Burlington', details:'U16 Fall Tryouts — Playground Burlington' },
+  { date:'2026-06-10', day:10, dow:'Wed', type:'practice', title:'Skills Work', time:'8:00–9:00pm', location:'ACC 5/6', details:'Burlington · Courts 5/6' },
+  { date:'2026-06-11', day:11, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-13', day:13, dow:'Sat', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Game 1 of 3 — Week 1' },
+  { date:'2026-06-14', day:14, dow:'Sun', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Games 2–3 of 3 — Week 1' },
+  { date:'2026-06-15', day:15, dow:'Mon', type:'practice', title:'Practice', time:'6:00–7:30pm', location:'RB-B/C', details:'Robert Bateman · Permit FA-55089' },
+  { date:'2026-06-16', day:16, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-17', day:17, dow:'Wed', type:'practice', title:'Practice', time:'8:00–9:00pm', location:'ACC 5/6', details:'Burlington · Courts 5/6' },
+  { date:'2026-06-18', day:18, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-20', day:20, dow:'Sat', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Game 1 of 3 — Week 2' },
+  { date:'2026-06-21', day:21, dow:'Sun', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Games 2–3 of 3 — Week 2' },
+  { date:'2026-06-22', day:22, dow:'Mon', type:'practice', title:'Practice', time:'6:00–7:30pm', location:'RB-B/C', details:'Robert Bateman · Courts B/C' },
+  { date:'2026-06-23', day:23, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-24', day:24, dow:'Wed', type:'practice', title:'Practice', time:'6:00–7:30pm', location:'ACC-6', details:'Burlington · Court 6' },
+  { date:'2026-06-25', day:25, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-06-27', day:27, dow:'Sat', type:'open', title:'Open Weekend', time:'—', location:'No game', details:'Free weekend' },
+  { date:'2026-06-28', day:28, dow:'Sun', type:'open', title:'Open Weekend', time:'—', location:'No game', details:'Free weekend' },
+  { date:'2026-06-29', day:29, dow:'Mon', type:'practice', title:'Practice', time:'8:30–10:00pm', location:'ACC 3/4', details:'Burlington · Courts 3/4' },
+  { date:'2026-07-04', day:4, dow:'Sat', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Game 1 of 3 — Week 3' },
+  { date:'2026-07-05', day:5, dow:'Sun', type:'game', title:'Coalition League', time:'TBD', location:'TBD', details:'Games 2–3 of 3 — Week 3' },
+  { date:'2026-07-06', day:6, dow:'Mon', type:'practice', title:'Practice', time:'8:30–10:00pm', location:'TW', details:'Tansley Woods Community Centre' },
+  { date:'2026-07-07', day:7, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-08', day:8, dow:'Wed', type:'practice', title:'Practice', time:'7:30–9:00pm', location:'ACC 3/4', details:'Burlington · Courts 3/4' },
+  { date:'2026-07-09', day:9, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-11', day:11, dow:'Sat', type:'tournament', title:'Team Addy 3v3', time:'TBD', location:'U of Guelph', details:'3v3 Tournament — Day 1 · Guelph, ON', link:'https://www.teamaddy.ca/basketball' },
+  { date:'2026-07-12', day:12, dow:'Sun', type:'tournament', title:'Team Addy 3v3', time:'TBD', location:'U of Guelph', details:'3v3 Tournament — Day 2 · Guelph, ON', link:'https://www.teamaddy.ca/basketball' },
+  { date:'2026-07-13', day:13, dow:'Mon', type:'practice', title:'Practice', time:'8:30–10:00pm', location:'TW', details:'Tansley Woods · Contract game' },
+  { date:'2026-07-14', day:14, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-15', day:15, dow:'Wed', type:'practice', title:'Practice', time:'7:30–9:00pm', location:'ACC 3/4', details:'Burlington · Courts 3/4' },
+  { date:'2026-07-16', day:16, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-18', day:18, dow:'Sat', type:'game', title:'Coalition Playoffs', time:'TBD', location:'TBD', details:'Coalition League — Playoffs Day 1' },
+  { date:'2026-07-19', day:19, dow:'Sun', type:'game', title:'Coalition Playoffs', time:'TBD', location:'TBD', details:'Coalition League — Playoffs Day 2' },
+  { date:'2026-07-20', day:20, dow:'Mon', type:'practice', title:'Practice', time:'8:30–10:00pm', location:'TW', details:'Tansley Woods · Permit FA-55445' },
+  { date:'2026-07-21', day:21, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-22', day:22, dow:'Wed', type:'practice', title:'Practice', time:'7:30–9:00pm', location:'ACC 3/4', details:'Burlington · Courts 3/4' },
+  { date:'2026-07-23', day:23, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-24', day:24, dow:'Fri', type:'tournament', title:'EBSA Montreal', time:'TBD', location:'Montreal, QC', details:'EBSA Tournament — Day 1', link:'https://www.ebsacademy.ca/royal-city-classic-2' },
+  { date:'2026-07-25', day:25, dow:'Sat', type:'tournament', title:'EBSA Montreal', time:'TBD', location:'Montreal, QC', details:'EBSA Tournament — Day 2', link:'https://www.ebsacademy.ca/royal-city-classic-2' },
+  { date:'2026-07-26', day:26, dow:'Sun', type:'tournament', title:'EBSA Montreal', time:'TBD', location:'Montreal, QC', details:'EBSA Tournament — Day 3', link:'https://www.ebsacademy.ca/royal-city-classic-2' },
+  { date:'2026-07-27', day:27, dow:'Mon', type:'practice', title:'Practice', time:'8:30–10:00pm', location:'TW', details:'Tansley Woods Community Centre' },
+  { date:'2026-07-28', day:28, dow:'Tue', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-07-29', day:29, dow:'Wed', type:'practice', title:'Practice', time:'7:30–9:00pm', location:'ACC 3/4', details:'Burlington · Courts 3/4' },
+  { date:'2026-07-30', day:30, dow:'Thu', type:'agility', title:'Agility Training', time:'8:00–9:00pm', location:'Conker Fitness', details:'Burlington, ON' },
+  { date:'2026-08-01', day:1, dow:'Sat', type:'open', title:'Open Weekend', time:'—', location:'No game', details:'Free weekend' },
+  { date:'2026-08-02', day:2, dow:'Sun', type:'open', title:'Open Weekend', time:'—', location:'No game', details:'Free weekend' },
 ];
 
-const TYPE_ICONS  = {practice:'🏀',game:'🏆',tournament:'🎽',agility:'💪',open:'—'};
-const TYPE_LABELS = {practice:'Practice',game:'Coalition',tournament:'Tournament',agility:'Conker',open:'Open'};
+const TYPE_ICONS = { practice:'🏀', game:'🏆', tournament:'🎽', agility:'💪', open:'📆', tryout:'🔍' };
+const TYPE_LABELS = { practice:'Practice', game:'Coalition', tournament:'Tournament', agility:'Conker Fitness', open:'Open', tryout:'Tryout' };
+
 let activeFilter = 'all';
 let expandedCards = new Set();
 
-function updateStatus() {
-  const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  const todayEv = EVENTS.filter(e => e.date === today && e.type !== 'open');
-  const upcoming = EVENTS.filter(e => e.date >= today && e.type !== 'open');
-  const next = upcoming[0];
-  const dot = document.getElementById('status-dot');
-  const msg = document.getElementById('status-message');
-  const lbl = document.getElementById('status-label');
-  const pill = document.getElementById('status-next');
-  if (todayEv.length > 0) {
-    const ev = todayEv[0];
-    dot.className = 'status-dot green';
-    lbl.textContent = 'Today!';
-    msg.textContent = ev.title + ' · ' + ev.time + ' · ' + ev.location;
-    pill.textContent = 'TODAY';
-  } else if (next) {
-    const diff = Math.round((new Date(next.date+'T12:00') - now) / 86400000);
-    dot.className = diff <= 2 ? 'status-dot yellow' : 'status-dot green';
-    lbl.textContent = 'Next Event';
-    msg.textContent = next.title + ' · ' + next.dow + ' · ' + next.location;
-    pill.textContent = diff === 0 ? 'TODAY' : diff === 1 ? 'TOMORROW' : diff + 'd away';
-  } else {
-    dot.className = 'status-dot red';
-    lbl.textContent = 'Season';
-    msg.textContent = 'Season complete — great summer!';
-    pill.textContent = 'DONE';
-  }
+function renderRoster() {
+  const grid = document.getElementById('roster-grid');
+  ROSTER.forEach(p => {
+    const isCohen = p.num === 77;
+    const card = document.createElement('div');
+    card.className = 'player-card' + (isCohen ? ' highlight' : '');
+    card.innerHTML = `
+      <div class="player-num">${p.num}</div>
+      <div class="player-info">
+        <div class="player-name">${p.name}</div>
+        <div class="player-height">${p.height}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function isPast(dateStr) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const evDate = new Date(dateStr + 'T00:00');
+  return evDate < today;
+}
+
+function buildCard(ev, idx, past) {
+  const key = ev.date + idx;
+  const isExp = expandedCards.has(key);
+  const card = document.createElement('div');
+  card.className = `event-card ${ev.type}${past ? ' past-event' : ''}`;
+  card.innerHTML = `
+    <div class="card-inner" onclick="toggleCard(this,'${key}')">
+      <div class="date-block">
+        <div class="date-day${past ? ' past-day' : ''}">${ev.day}</div>
+        <div class="date-dow">${ev.dow}</div>
+      </div>
+      <div class="divider-v"></div>
+      <div class="event-info" style="${past ? 'opacity:0.6' : ''}">
+        <div class="event-type-badge badge-${ev.type}">${TYPE_ICONS[ev.type]} ${TYPE_LABELS[ev.type]}</div>
+        <div class="event-title${past ? ' strikethrough' : ''}">${ev.title}</div>
+        <div class="event-meta">
+          <span class="meta-item">⏰ ${ev.time}</span>
+          <span class="meta-item">📍 ${ev.location}</span>
+        </div>
+      </div>
+      ${past ? '<span class="done-check">✓</span>' : `<span style="color:var(--muted);font-size:18px;transition:transform 0.2s;transform:rotate(${isExp?'90':'0'}deg)">›</span>`}
+    </div>
+    <div class="card-expanded ${isExp?'open':''}">
+      <div class="expanded-row"><span class="exp-label">Details</span><span class="exp-value">${ev.details}</span></div>
+      <div class="expanded-row"><span class="exp-label">Time</span><span class="exp-value">${ev.time}</span></div>
+      <div class="expanded-row"><span class="exp-label">Location</span><span class="exp-value">${ev.location}</span></div>
+      ${ev.link ? `<a class="event-link" href="${ev.link}" target="_blank">🔗 Event Website</a>` : ''}
+    </div>
+  `;
+  return card;
 }
 
 function renderEvents() {
@@ -525,68 +1092,123 @@ function renderEvents() {
   const filtered = activeFilter === 'all' ? EVENTS : EVENTS.filter(e => e.type === activeFilter);
   if (!filtered.length) { empty.classList.add('show'); return; }
   empty.classList.remove('show');
-  let curMonth = '';
-  filtered.forEach((ev, idx) => {
-    const month = ev.date.substring(0,7);
-    if (month !== curMonth) {
-      curMonth = month;
+
+  const upcoming = filtered.filter(e => !isPast(e.date));
+  const past     = filtered.filter(e => isPast(e.date));
+
+  // Upcoming
+  let currentMonth = '';
+  upcoming.forEach((ev, idx) => {
+    const month = ev.date.substring(0, 7);
+    const monthName = new Date(ev.date + 'T12:00').toLocaleString('en-CA', { month:'long', year:'numeric' });
+    if (month !== currentMonth) {
+      currentMonth = month;
       const mh = document.createElement('div');
       mh.className = 'month-header';
-      mh.textContent = new Date(ev.date+'T12:00').toLocaleString('en-CA',{month:'long',year:'numeric'}).toUpperCase();
+      mh.textContent = monthName.toUpperCase();
       list.appendChild(mh);
     }
-    const key = ev.date + idx;
-    const isOpen = expandedCards.has(key);
-    const card = document.createElement('div');
-    card.className = 'event-card ' + ev.type;
-    card.innerHTML = `<div class="card-inner" onclick="toggleCard(this,'${key}')">
-      <div class="date-block"><div class="date-day">${ev.day}</div><div class="date-dow">${ev.dow}</div></div>
-      <div class="divider-v"></div>
-      <div class="event-info">
-        <div class="event-type-badge badge-${ev.type}">${TYPE_ICONS[ev.type]} ${TYPE_LABELS[ev.type]}</div>
-        <div class="event-title">${ev.title}</div>
-        <div class="event-meta"><span class="meta-item">⏰ ${ev.time}</span><span class="meta-item">📍 ${ev.location}</span></div>
-      </div>
-      <span style="color:var(--muted);font-size:20px;transition:transform 0.2s;transform:rotate(${isOpen?'90':'0'}deg)">›</span>
-    </div>
-    <div class="card-expanded ${isOpen?'open':''}">
-      <div class="expanded-row"><span class="exp-label">Details</span><span class="exp-value">${ev.details}</span></div>
-      <div class="expanded-row"><span class="exp-label">Time</span><span class="exp-value">${ev.time}</span></div>
-      <div class="expanded-row"><span class="exp-label">Location</span><span class="exp-value">${ev.location}</span></div>
-      ${ev.link ? `<a class="ext-link" href="${ev.link}" target="_blank">🔗 Event Website</a>` : ''}
-    </div>`;
-    list.appendChild(card);
+    list.appendChild(buildCard(ev, idx, false));
   });
+
+  // Completed section
+  if (past.length) {
+    const compHeader = document.createElement('div');
+    compHeader.className = 'completed-header';
+    compHeader.innerHTML = `<span>✓ COMPLETED (${past.length})</span><button class="comp-toggle" onclick="toggleCompleted()">Show</button>`;
+    list.appendChild(compHeader);
+
+    const compList = document.createElement('div');
+    compList.id = 'completed-list';
+    compList.style.display = 'none';
+
+    let pastMonth = '';
+    past.slice().reverse().forEach((ev, idx) => {
+      const month = ev.date.substring(0, 7);
+      const monthName = new Date(ev.date + 'T12:00').toLocaleString('en-CA', { month:'long', year:'numeric' });
+      if (month !== pastMonth) {
+        pastMonth = month;
+        const mh = document.createElement('div');
+        mh.className = 'month-header';
+        mh.style.opacity = '0.5';
+        mh.textContent = monthName.toUpperCase();
+        compList.appendChild(mh);
+      }
+      compList.appendChild(buildCard(ev, 'p'+idx, true));
+    });
+    list.appendChild(compList);
+  }
+}
+
+function toggleCompleted() {
+  const cl = document.getElementById('completed-list');
+  const btn = document.querySelector('.comp-toggle');
+  if (!cl) return;
+  const showing = cl.style.display !== 'none';
+  cl.style.display = showing ? 'none' : 'block';
+  btn.textContent = showing ? 'Show' : 'Hide';
 }
 
 function toggleCard(inner, key) {
   const card = inner.parentElement;
   const exp = card.querySelector('.card-expanded');
-  const arr = inner.querySelector('span:last-child');
-  if (exp.classList.contains('open')) { exp.classList.remove('open'); arr.style.transform='rotate(0deg)'; expandedCards.delete(key); }
-  else { exp.classList.add('open'); arr.style.transform='rotate(90deg)'; expandedCards.add(key); }
-}
-
-function renderRoster() {
-  const grid = document.getElementById('roster-grid');
-  ROSTER.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'player-card';
-    card.innerHTML = `<div class="player-number">#${p.num}</div><div><div class="player-name">${p.name}</div><div class="player-height">📏 ${p.height}</div></div>`;
-    grid.appendChild(card);
-  });
+  const arrow = inner.querySelector('span:last-child');
+  if (exp.classList.contains('open')) {
+    exp.classList.remove('open'); arrow.style.transform = 'rotate(0deg)'; expandedCards.delete(key);
+  } else {
+    exp.classList.add('open'); arrow.style.transform = 'rotate(90deg)'; expandedCards.add(key);
+  }
 }
 
 function switchPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.querySelector('[data-page="'+page+'"]').classList.add('active');
-  const sched = page === 'schedule';
-  document.getElementById('schedule-header').style.display = sched ? '' : 'none';
-  document.getElementById('stats-row').style.display = sched ? '' : 'none';
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`[data-page="${page}"]`).classList.add('active');
+  const isSchedule = page === 'schedule';
+  document.getElementById('schedule-header').style.display = isSchedule ? '' : 'none';
+  document.getElementById('stats-row').style.display = isSchedule ? '' : 'none';
 }
 
+// STATUS
+const STATUS_CONFIG = {
+  on: { cls: '', text: 'All systems go — Season is ON', sub: 'Tap to update practice status' },
+  warning: { cls: 'warning', text: 'Check for Updates', sub: 'Schedule change — check messages' },
+  cancelled: { cls: 'cancelled', text: 'Practice Cancelled Tonight', sub: 'Tonight\'s session is off' }
+};
+
+function setStatus(type) {
+  const cfg = STATUS_CONFIG[type];
+  const bar = document.getElementById('status-bar');
+  bar.className = 'status-bar ' + cfg.cls;
+  document.getElementById('status-text').textContent = cfg.text;
+  document.getElementById('status-sub').textContent = cfg.sub;
+  closeStatusModal();
+}
+
+function openStatusModal() { document.getElementById('status-modal').classList.add('open'); }
+function closeStatusModal(e) {
+  if (!e || e.target === document.getElementById('status-modal')) {
+    document.getElementById('status-modal').classList.remove('open');
+  }
+}
+
+// CONTACT FORM
+function handleSubmit() {
+  const name = document.getElementById('f-name').value.trim();
+  const player = document.getElementById('f-player').value;
+  const topic = document.getElementById('f-topic').value;
+  const msg = document.getElementById('f-msg').value.trim();
+  if (!name || !player || !topic || !msg) { alert('Please fill in all fields before sending.'); return; }
+  document.getElementById('success-msg').classList.add('show');
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-player').value = '';
+  document.getElementById('f-topic').value = '';
+  document.getElementById('f-msg').value = '';
+  setTimeout(() => document.getElementById('success-msg').classList.remove('show'), 5000);
+}
+
+// FILTERS
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -596,23 +1218,8 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-function submitForm() {
-  const name = document.getElementById('contact-name').value.trim();
-  const email = document.getElementById('contact-email').value.trim();
-  const player = document.getElementById('contact-player').value;
-  const topic = document.getElementById('contact-topic').value;
-  const message = document.getElementById('contact-message').value.trim();
-  if (!name || !email || !message) { alert('Please fill in your name, email, and message.'); return; }
-  const subj = encodeURIComponent('[Force Elite] ' + (topic||'Message') + ' — ' + (player||'Parent'));
-  const body = encodeURIComponent('Name: '+name+'\nPlayer: '+player+'\nTopic: '+topic+'\n\n'+message);
-  window.location.href = 'mailto:basketballsims@gmail.com?subject='+subj+'&body='+body;
-  document.getElementById('form-success').classList.add('show');
-  setTimeout(() => document.getElementById('form-success').classList.remove('show'), 5000);
-}
-
-updateStatus();
-renderEvents();
 renderRoster();
+renderEvents();
 </script>
 </body>
 </html>
